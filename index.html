@@ -30,26 +30,33 @@
         .sold-out { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
         
         .product-info { padding: 15px; }
+        
+        /* CODE စာလုံး - အကြီးဆုံးနှင့် အထင်ရှားဆုံး */
         .product-code { 
-            font-size: 16px; /* အရွယ်အစား တိုးထားသည် */
+            font-size: 18px; 
             color: #d81b60; 
             background: #fdf0f4; 
             display: inline-block;
             padding: 5px 15px;
             border-radius: 6px;
-            font-weight: 800; /* စာလုံးအထူး */
+            font-weight: 800;
             letter-spacing: 1px;
             margin-bottom: 10px;
         }
+
+        /* Item Name - နည်းနည်းသေးပြီး မှိန်သောပုံစံ */
         .product-name { 
-            font-size: 14px; /* အရွယ်အစား လျှော့ထားသည် */
+            font-size: 13px; 
             margin: 5px 0; 
-            color: #888; 
+            color: #999; 
             font-weight: normal; 
+            text-transform: uppercase;
         }
+
+        /* ဈေးနှုန်း - MMK ဖြုတ်ထားပြီး ပိုကြီးသောပုံစံ */
         .price { 
             color: #333; 
-            font-size: 20px; 
+            font-size: 22px; 
             margin-bottom: 20px; 
             font-weight: bold;
         }
@@ -90,10 +97,9 @@
 
                 const id = row[0] ? row[0].v : 'N/A';
                 const name = row[1] ? row[1].v : 'No Name';
-                const price = row[2] ? row[2].v : 'Contact';
-
-                // ဈေးနှုန်းကို 3 digit တိုင်း ကော်မာထည့်ခြင်း
-                let rawPrice = row[2] ? row[2].v : '0';
+                
+                // ဈေးနှုန်းကို 3 digit တိုင်း ကော်မာထည့်ခြင်းနှင့် MMK ဖယ်ရှားခြင်း
+                let rawPrice = row[2] ? row[2].v : 0;
                 let formattedPrice = Number(rawPrice).toLocaleString();
                 
                 // Checkbox တန်ဖိုးကို စစ်ဆေးခြင်း (TRUE ဖြစ်ရင် Available)
@@ -105,9 +111,9 @@
                         <span class="status-badge ${isAvailable ? 'available' : 'sold-out'}">${statusText}</span>
                         <img src="${row[4] ? row[4].v : 'https://via.placeholder.com/400x300'}" class="product-image" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
                         <div class="product-info">
-                            <div class="product-code">CODE: ${id}</div>
+                            <div class="product-code">${id}</div>
                             <h3 class="product-name">${name}</h3>
-                            <p class="price">${price} MMK</p>
+                            <p class="price">${formattedPrice}</p>
                             ${isAvailable 
                                 ? `<a href="tel:09676962015" class="order-btn">📞 ဖုန်းဆက် မှာယူရန်</a>` 
                                 : `<a href="#" class="order-btn disabled">ကုန်သွားပါပြီ</a>`}

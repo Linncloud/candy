@@ -31,27 +31,27 @@
         
         .product-info { padding: 15px; }
         .product-code { 
-            font-size: 12px; 
-            color: #d81b60; /* ဆိုင်ရဲ့ ပန်းရောင် Theme */
-            background: #fdf0f4; /* နုဖတ်တဲ့ ပန်းရောင်နောက်ခံ */
+            font-size: 16px; /* အရွယ်အစား တိုးထားသည် */
+            color: #d81b60; 
+            background: #fdf0f4; 
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 5px;
-            font-weight: bold;
+            padding: 5px 15px;
+            border-radius: 6px;
+            font-weight: 800; /* စာလုံးအထူး */
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .product-name { 
-            font-size: 18px; 
+            font-size: 14px; /* အရွယ်အစား လျှော့ထားသည် */
             margin: 5px 0; 
-            color: #777; /* ခဲရောင်မှိန်မှိန် */
+            color: #888; 
             font-weight: normal; 
         }
         .price { 
             color: #333; 
-            font-size: 17px; 
+            font-size: 20px; 
             margin-bottom: 20px; 
-            font-weight: 600;
+            font-weight: bold;
         }
         
         .order-btn { display: inline-block; padding: 12px 40px; background: #d81b60; color: white !important; text-decoration: none; border-radius: 25px; font-size: 14px; font-weight: bold; transition: 0.3s; }
@@ -91,6 +91,10 @@
                 const id = row[0] ? row[0].v : 'N/A';
                 const name = row[1] ? row[1].v : 'No Name';
                 const price = row[2] ? row[2].v : 'Contact';
+
+                // ဈေးနှုန်းကို 3 digit တိုင်း ကော်မာထည့်ခြင်း
+                let rawPrice = row[2] ? row[2].v : '0';
+                let formattedPrice = Number(rawPrice).toLocaleString();
                 
                 // Checkbox တန်ဖိုးကို စစ်ဆေးခြင်း (TRUE ဖြစ်ရင် Available)
                 const isAvailable = row[3] ? row[3].v === true : false;

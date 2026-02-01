@@ -52,37 +52,42 @@
         <p id="loading">ပန်းစည်းပုံစံများ တင်နေသည်၊ ခဏစောင့်ပါ...</p>
     </div>
 
-   <script>
+<script>
     const sheetId = '1SDQaijpBd1TvVLLLSWf5HyBn8m_rB8HvFQkmPTpbzw0';
-    // Sheet name က 'Sheet1' ဖြစ်ရပါမယ်
     const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Sheet1`;
 
     fetch(base)
         .then(res => res.text())
         .then(data => {
-            const json = JSON.parse(data.substring(47).slice(0, -2));
+            // Google Sheet JSON ကို သန့်စင်ခြင်း
+            const temp = data.substring(47).slice(0, -2);
+            const json = JSON.parse(temp);
             const rows = json.table.rows;
             let html = '';
 
-            // Row 1 က ခေါင်းစဉ်ဖြစ်လို့ index 0 ကို ကျော်ပါတယ်
-            for (let i = 1; i < rows.length; i++) {
+            // Row 1 (Header) ကို ကျော်ပြီး Row 2 ကစဖတ်ပါ
+            for (let i = 0; i < rows.length; i++) {
                 const row = rows[i].c;
-                const id = row[0] ? row[0].v : '';
-                const name = row[1] ? row[1].v : '';
-                const price = row[2] ? row[2].v : '';
-                const status = row[3] ? row[3].v : 'Available';
-                const img = row[4] ? row[4].v : '';
+                
+                // ခေါင်းစဉ်တန်းဖြစ်နေရင် ကျော်သွားပါ
+                if (!row || (row[1] && row[1].v === "Name")) continue;
 
-                const isAvailable = status.toString().toLowerCase() === 'available';
+                const id = row[0] ? row[0].v : 'N/A';
+                const name = row[1] ? row[1].v : 'No Name';
+                const price = row[2] ? row[2].v : 'Contact';
+                const status = row[3] ? row[3].v : 'Available';
+                const img = row[4] ? row[4].v : 'https://via.placeholder.com/400';
+
+                const isAvailable = status.toString().toLowerCase().trim() === 'available';
 
                 html += `
                     <div class="product-card">
                         <span class="status-badge ${isAvailable ? 'available' : 'sold-out'}">${status}</span>
-                        <img src="${img}" class="product-image" onerror="this.src='https://via.placeholder.com/400x300?text=Flower+Image'">
+                        <img src="${img}" class="product-image" onerror="this.src='https://via.placeholder.com/400x300?text=No+Image'">
                         <div class="product-info">
                             <div class="product-code">CODE: ${id}</div>
                             <h3 class="product-name">${name}</h3>
-                            <p class="price">${price}</p>
+                            <p class="price">${price} MMK</p>
                             ${isAvailable 
                                 ? `<a href="tel:09676962015" class="order-btn">မှာယူရန်</a>` 
                                 : `<a href="#" class="order-btn disabled">ကုန်သွားပါပြီ</a>`}
@@ -91,6 +96,10 @@
                 `;
             }
             document.getElementById('catalog').innerHTML = html;
+        })
+        .catch(err => {
+            document.getElementById('catalog').innerHTML = "ချိတ်ဆက်မှု အမှားအယွင်းရှိနေပါသည်။";
+            console.error(err);
         });
 </script>
 </body>
